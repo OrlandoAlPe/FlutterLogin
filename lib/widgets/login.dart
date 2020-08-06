@@ -24,20 +24,24 @@ class _MainLoginState extends State<MainLogin> {
                       color: Theme.of(context).primaryColor,
                       fontSize: 30,
                       fontWeight: FontWeight.bold)),
-              Padding(
-                  //Email form
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextField(
-                      decoration: InputDecoration(
-                          labelText: 'Email', icon: Icon(Icons.mail_outline)))),
-              Padding(
-                  //Password form
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          labelText: 'Password',
-                          icon: Icon(Icons.lock_outline)))),
+              Form(
+                  child: Column(children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: TextField(
+                        //Email form
+                        decoration: InputDecoration(
+                            labelText: 'Email',
+                            icon: Icon(Icons.mail_outline)))),
+                Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: TextField(
+                        //Password form
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            labelText: 'Password',
+                            icon: Icon(Icons.lock_outline))))
+              ])),
               ButtonBar(
                 //Main buttons
                 alignment: MainAxisAlignment.center,
