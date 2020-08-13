@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+//import 'package:tasks/Screens/Main_tasks_screen.dart';
 import 'package:tasks/widgets/login.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+  //  if (true) {
+      return Scaffold(
       body: Container(
-        //Background
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -17,5 +18,10 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+    /*}  else {
+     return TasksMenu();
+    }*/
+    
+    
   }
 }

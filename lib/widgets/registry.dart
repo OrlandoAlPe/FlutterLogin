@@ -6,36 +6,47 @@ class RegistryWidget extends StatefulWidget {
   _RegistryWidgetState createState() => _RegistryWidgetState();
 }
 
-//firbase instance
-FirebaseAuth _auth = FirebaseAuth.instance;
-
-//email and passworf validation key
-final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-
-//text field controllers
-final TextEditingController _emailContoller = TextEditingController();
-final TextEditingController _passwordContoller = TextEditingController();
-
-//Keep track of the state for the screen
-bool _success;
-String _userEmail;
-
 class _RegistryWidgetState extends State<RegistryWidget> {
   //register user with email & password with firebase
+  //firbase instance
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  //email and password validation key
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
+  //text field controllers
+  final TextEditingController _emailContoller = TextEditingController();
+  final TextEditingController _passwordContoller = TextEditingController();
+
+  //Keep track of the state for the screen
+  bool _success;
+  String _userEmail;
   void _register() async {
-    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-            email: _emailContoller.text, password: _passwordContoller.text))
-        .user;
-    if (user != null) {
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-      });
-    } else {
-      setState(() {
-        _success = true;
-      });
+    try {
+      final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+              email: _emailContoller.text, password: _passwordContoller.text))
+          .user;
+      if (user != null) {
+        setState(() {
+          _success = true;
+          _userEmail = user.email;
+          _emailContoller.clear();
+          _passwordContoller.clear();
+        });
+      } else {
+        setState(() {
+          _success = true;
+        });
+      }
+    } catch (e) {
+      print(e);
     }
+  }
+  
+  void dispose(){
+    super.dispose();
+    _passwordContoller.dispose();
+    _emailContoller.dispose();
   }
 
   @override
@@ -51,8 +62,10 @@ class _RegistryWidgetState extends State<RegistryWidget> {
                   TextFormField(
                       controller: _emailContoller,
                       validator: (String value) {
-                        if (value.isEmpty) {
-                          return 'Please Enter an email.';
+                        if (value.isEmpty ||
+                            !value.contains('@') ||
+                            value.contains(' ')) {
+                          return 'Please Enter a valid email.';
                         } else {
                           return null;
                         }
@@ -72,14 +85,31 @@ class _RegistryWidgetState extends State<RegistryWidget> {
                       decoration: InputDecoration(
                           labelText: 'Password', icon: Icon(Icons.vpn_key)))
                 ])),
-            RaisedButton(
-              child: Text('Sign up', style: TextStyle(color: Colors.white)),
-              color: Theme.of(context).primaryColor,
-              onPressed: () async {
-                if (_formkey.currentState.validate()) {
-                  _register();
-                }
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  child: Text('Sign up', style: TextStyle(color: Colors.white)),
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () async {
+                    if (_formkey.currentState.validate()) {
+                      _register();
+                    }
+                  },
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                RaisedButton(
+                    child: Text('Login', style: TextStyle(color: Colors.white)),
+                    color: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+            ),
+            SizedBox(
+              height: 5,
             ),
             Container(
               alignment: Alignment.center,

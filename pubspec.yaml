@@ -23,7 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_dynamic_links: ^0.5.3  
   firebase_analytics: ^5.0.16
   firebase_core: ^0.4.5
   cloud_firestore: ^0.13.7
