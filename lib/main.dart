@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginScreen(),
         '/Main-Menu': (context) => TasksMenu(),
-        '/create-account' : (context) => Registry()
+        '/create-account' : (context) => Registry(),
       },
     );
   }

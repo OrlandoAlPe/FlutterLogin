@@ -21,6 +21,7 @@ class _RegistryWidgetState extends State<RegistryWidget> {
   //Keep track of the state for the screen
   bool _success;
   String _userEmail;
+ 
   void _register() async {
     try {
       final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
@@ -104,7 +105,11 @@ class _RegistryWidgetState extends State<RegistryWidget> {
                     child: Text('Login', style: TextStyle(color: Colors.white)),
                     color: Theme.of(context).primaryColor,
                     onPressed: () {
+                      if (_success == true) {
                       Navigator.of(context).pop();
+                      } else{
+                        _formkey.currentState.validate();
+                      }
                     })
               ],
             ),
@@ -116,8 +121,8 @@ class _RegistryWidgetState extends State<RegistryWidget> {
               child: Text(_success == null
                   ? ''
                   : (_success
-                      ? 'Successfully registered ' + _userEmail
-                      : 'Registration failed')),
+                      ? 'Successfully registered user ' + _userEmail 
+                      : 'Something went wrong')),
             )
           ],
         ),

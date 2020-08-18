@@ -8,6 +8,13 @@ class TasksMenu extends StatefulWidget {
 class _TasksMenuState extends State<TasksMenu> {
   @override
   Widget build(BuildContext context) {
-    return Text('Logged in');
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text('Main menu',style: TextStyle(color: Colors.white),),
+      ),
+      body: Text('Logged in'),
+    );
   }
 }

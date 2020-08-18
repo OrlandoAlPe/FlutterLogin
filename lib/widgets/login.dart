@@ -12,20 +12,19 @@ class _MainLoginState extends State<MainLogin> {
     final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text))
         .user;
-  if (user != null) {
-    setState(() {
-      _success = true;
-      _userEmail = user.email;
-    });
-  } else {
-    setState(() {
-      _success = false;
-    });
+    if (user != null) {
+      setState(() {
+        _success = true;
+        _uid = user.uid;
+     //   Navigator.of(context).pushNamed('/Main-Menu');
+      });
+    } else {
+      setState(() {
+        _success = false;
+      });
+    }
   }
-  
-  }
-
-  //firbase instance
+  //firebase instance
   FirebaseAuth _auth = FirebaseAuth.instance;
   // form controllers
   final TextEditingController _emailController = TextEditingController();
@@ -34,7 +33,8 @@ class _MainLoginState extends State<MainLogin> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   //utils
   bool _success;
-  String _userEmail;
+  String _uid;
+  
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -48,7 +48,7 @@ class _MainLoginState extends State<MainLogin> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text('T   A   S   K   S',
+              Text('L   O   G   I   N',
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 30,
@@ -90,9 +90,9 @@ class _MainLoginState extends State<MainLogin> {
                                 labelText: 'Password',
                                 icon: Icon(Icons.lock_outline))))
                   ])),
-              ButtonBar(
+              Row(
                 //Main buttons
-                alignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   ClipRRect(
                       borderRadius: BorderRadius.circular(11),
@@ -109,6 +109,8 @@ class _MainLoginState extends State<MainLogin> {
                       onPressed: () async {
                         if (_formkey.currentState.validate()) {
                           _signInWithEmailAndPassword();
+                           _emailController.clear();
+                           _passwordController.clear();
                         }
                       },
                       child:
@@ -116,11 +118,16 @@ class _MainLoginState extends State<MainLogin> {
                       color: Color(0xff48b1bf),
                     ),
                   ),
-                  Container(
-                    child: Text(_success == null ? ' ' : (_success ? 'Successfully logged in '+ _userEmail: 'Registration failed')),
-                  )
+                  
                 ],
-              )
+              ),
+              Container(
+                      child: Text( _success == null
+                          ? ' '
+                          : (_success
+                              ? 'Successfully authenticated user ' + _uid
+                              : 'Registration failed'),textAlign: TextAlign.center,),
+                    ),
             ],
           ),
         ),
